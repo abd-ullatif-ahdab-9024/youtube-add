@@ -20,45 +20,36 @@ const timerFn = () => {
   let hours = 0;
 
   setInterval(() => {
+    let date = new Date();
     if (localStorage.getItem("the-time") === null) {
-      let date = new Date();
-      console.log(date.getDate());
-      //   localStorage.setItem("m-date", newDate());
+      localStorage.setItem("the-date", `${date.getDay()}`);
+    }
+    if (localStorage.getItem("the-date") !== date.getDay()) {
+      localStorage.removeItem("the-time");
     }
 
-    if (localStorage.getItem("the-time") !== null) {
-      let timeArray = localStorage.getItem("the-time").split(":");
-      let hours2 = timeArray[0];
-      let minutes2 = timeArray[1];
-      let seconds2 = timeArray[2];
-      hours = hours2;
-      minutes = minutes2;
-      seconds = seconds2;
+    if (localStorage.getItem("the-time") != null) {
+      let arr = localStorage.getItem("the-time").split(":");
+
+      hours = arr[0];
+      minutes = arr[1];
+      seconds = arr[2];
     }
 
     seconds++;
-
-    if (seconds === 60) {
+    if (seconds >= 60) {
       seconds = 0;
       seconds++;
       minutes++;
     }
-    if (minutes === 60) {
+    if (minutes >= 60) {
       minutes = 0;
+
       hours++;
     }
-    if (seconds < 10) {
-      p.textContent = `${hours}:${minutes}:0${seconds}`;
-    }
-    if (minutes < 10) {
-      p.textContent = `${hours}:0${minutes}:${seconds}`;
-    }
-    if (hours < 10) {
-      p.textContent = `0${hours}:${minutes}:${seconds}`;
-    }
-
+    p.textContent = `${hours}:${minutes}:${seconds}`;
     localStorage.setItem("the-time", `${hours}:${minutes}:${seconds}`);
-  }, 1000);
+  }, 5000);
 };
 
 timerFn();
