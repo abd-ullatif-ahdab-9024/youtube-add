@@ -13,7 +13,12 @@ backgroundDiv.appendChild(p);
 backgroundDiv.classList.add("na");
 
 div.appendChild(backgroundDiv);
-
+const addZeroFn = (a) => {
+  if (a < 10) {
+    return `0${a}`;
+  }
+  return a;
+};
 const timerFn = () => {
   let seconds = 0;
   let minutes = 0;
@@ -22,9 +27,10 @@ const timerFn = () => {
   setInterval(() => {
     let date = new Date();
     if (localStorage.getItem("the-time") === null) {
-      localStorage.setItem("the-date", `${date.getDay()}`);
+      localStorage.setItem("the-date", date.getDay());
     }
-    if (localStorage.getItem("the-date") !== date.getDay()) {
+
+    if (+localStorage.getItem("the-date") !== date.getDay()) {
       localStorage.removeItem("the-time");
     }
 
@@ -47,9 +53,11 @@ const timerFn = () => {
 
       hours++;
     }
-    p.textContent = `${hours}:${minutes}:${seconds}`;
+    p.textContent = `${addZeroFn(hours)}:${addZeroFn(minutes)}:${addZeroFn(
+      seconds
+    )}`;
     localStorage.setItem("the-time", `${hours}:${minutes}:${seconds}`);
-  }, 5000);
+  }, 1000);
 };
 
 timerFn();
