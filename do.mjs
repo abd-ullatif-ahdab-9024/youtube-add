@@ -39,3 +39,25 @@ export const addTime = (from, to) => {
   });
 };
 
+function editTime(to) {
+  const objectStore = db.transaction("timer").objectStore("timer");
+
+  const request = objectStore.get(key);
+
+  request.onsuccess = () => {
+    const timeTo = request.result;
+
+    // Change the name property
+    timeTo.to = to + 5;
+
+    // Create a request to update
+    const updateRequest = objectStore.update(timeTo);
+
+    updateRequest.onsuccess = () => {
+      console.log(`Estudent updated, email: ${updateRequest.result}`);
+    };
+  };
+  return to + 100;
+}
+
+editTime(2000);
