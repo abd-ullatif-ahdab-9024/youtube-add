@@ -1,5 +1,8 @@
-//import { addTime } from "./do.mjs";
-console.log("jkljlklkjkl");
+import { addTime, editTime, getdb } from "./dos.mjs";
+
+console.log(
+  "jkljlklkjklssssssssssssssssssssssssssssssssssssssssss22222222222222222342255555555555555555555555555"
+);
 
 const div = document.createElement("div");
 const backgroundDiv = document.createElement("div");
@@ -27,65 +30,67 @@ const addZeroFn = (a) => {
 let seconds = 0;
 let minutes = 0;
 let hours = 0;
-
-function timerFn() {
-  let date = new Date();
-  let start = date.getTime();
-  //  addTime(start,start)
-  // setInterval(() => {
-
-  // }, 10000);
-  video.addEventListener("pause", () => {
-    clearInterval(batte5);
-    let end = date.getTime();
-    //  addTime(start, end);
-  });
-
-  batte5 = setInterval(() => {
+const main = async () => {
+  const db = await getdb();
+  console.log(db);
+  async function timerFn() {
     let date = new Date();
-    if (localStorage.getItem("the-time") === null) {
-      localStorage.setItem("the-date", date.getDay());
-    }
+    let start = date.getTime();
+    const id = await addTime(start, start, db);
+    setTimeout(() => {
+      editTime(id, start, db);
+    }, 5000);
+    video.addEventListener("pause", () => {
+      clearInterval(batte5);
+    });
 
-    if (+localStorage.getItem("the-date") !== date.getDay()) {
-      localStorage.removeItem("the-time");
-    }
+    batte5 = setInterval(() => {
+      let date = new Date();
+      if (localStorage.getItem("the-time") === null) {
+        localStorage.setItem("the-date", date.getDay());
+      }
 
-    if (localStorage.getItem("the-time") != null) {
-      let arr = localStorage.getItem("the-time").split(":");
+      if (+localStorage.getItem("the-date") !== date.getDay()) {
+        localStorage.removeItem("the-time");
+      }
 
-      hours = +arr[0];
-      minutes = +arr[1];
-      seconds = +arr[2];
-    }
+      if (localStorage.getItem("the-time") != null) {
+        let arr = localStorage.getItem("the-time").split(":");
 
-    seconds++;
-    if (seconds >= 60) {
-      seconds = 0;
+        hours = +arr[0];
+        minutes = +arr[1];
+        seconds = +arr[2];
+      }
+
       seconds++;
-      minutes++;
-    }
-    if (minutes >= 60) {
-      minutes = 0;
+      if (seconds >= 60) {
+        seconds = 0;
+        seconds++;
+        minutes++;
+      }
+      if (minutes >= 60) {
+        minutes = 0;
 
-      hours++;
-    }
+        hours++;
+      }
 
-    p.textContent = `${addZeroFn(hours)}:${addZeroFn(minutes)}:${addZeroFn(
-      seconds
-    )}`;
+      p.textContent = `${addZeroFn(hours)}:${addZeroFn(minutes)}:${addZeroFn(
+        seconds
+      )}`;
 
-    localStorage.setItem("the-time", `${hours}:${minutes}:${seconds}`);
-  }, 1000);
-}
-if (!video.paused) {
-  console.log("Ser");
-  timerFn();
-}
-video.addEventListener("play", timerFn);
+      localStorage.setItem("the-time", `${hours}:${minutes}:${seconds}`);
+    }, 1000);
+  }
+  if (!video.paused) {
+    console.log("Ser");
+    timerFn();
+  }
+  video.addEventListener("play", timerFn);
+};
+main().catch(console.log);
 
 const showAndHideFn = (e) => {
-  if (e.ctrlKey === true && e.shiftKey === true && e.key === "U") {
+  if (e.ctrlKey === true && e.shiftKey === true && e.key === "H") {
     console.log("youtube.com");
     div.style.display = "flex";
 
@@ -100,4 +105,4 @@ const showAndHideFn = (e) => {
   }
 };
 
-window.addEventListener("keydown", showAndHideFn);
+window.addEventListener("keyup", showAndHideFn);
